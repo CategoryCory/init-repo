@@ -16,10 +16,6 @@ fn main() -> Result<()> {
         Commands::Configure => {
             config::run_config_wizard()?;
         },
-        Commands::Help => {
-            let _ = Cli::command().print_help();
-            println!();
-        },
     }
 
     Ok(())
