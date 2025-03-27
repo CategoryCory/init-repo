@@ -10,7 +10,7 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::InitRepo { repo_name, base_dir, default_branch } => {
+        Commands::New { repo_name, base_dir, default_branch } => {
             init::initialize_repo(&repo_name, base_dir, default_branch)?;
         }
         Commands::Configure => {

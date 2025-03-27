@@ -11,7 +11,7 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Commands {
     /// Initialize a new bare repo
-    InitRepo {
+    New {
         /// The name of the repo
         repo_name: String,
 
