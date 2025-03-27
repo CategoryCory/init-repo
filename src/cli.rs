@@ -26,4 +26,7 @@ pub enum Commands {
 
     /// Run configuration setup
     Configure,
+
+    /// Show usage help information
+    Help,
 }
