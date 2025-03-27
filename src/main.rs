@@ -4,7 +4,7 @@ mod init;
 
 use anyhow::Result;
 use cli::{Cli, Commands};
-use clap::{CommandFactory, Parser};
+use clap::Parser;
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
