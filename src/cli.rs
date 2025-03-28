@@ -32,13 +32,21 @@ pub enum Commands {
         /// The name of the repo
         repo_name: String,
 
+        /// Optional host alias or SSH address (e.g. 'git@git-server.local')
+        #[arg(long)]
+        host: Option<String>,
+
+        /// Optional path to SSH key
+        #[arg(long)]
+        ssh_key: Option<String>,
+
         /// Specify the base directory; optional
         #[arg(long)]
         base_dir: Option<String>,
 
         /// Specify the default branch
         #[arg(long, default_value = "master")]
-        default_branch: String,
+        default_branch: Option<String>,
     },
 
     /// Run configuration setup
