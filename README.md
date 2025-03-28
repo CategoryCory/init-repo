@@ -9,6 +9,7 @@ Git workflows over SSH.
 
 - Initializes **bare Git repos** with correct `HEAD` configuration
 - Configurable **base directory** and **default branch name**
+- Supports **multiple remote host profiles**
 - Easily installable with `cargo install`
 - Configurable through CLI command
 
@@ -16,7 +17,7 @@ Git workflows over SSH.
 
 Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
 
-1. Clone this repo to your self-hosted Git server
+1. Clone this repo to your development machine
    ```sh
    git clone https://github.com/CategoryCory/init-repo.git
    ```
@@ -32,7 +33,13 @@ Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
    ```sh
    init-repo configure
    ```
-   You will be prompted to set a default base directory (e.g. `/home/git/repos`).
+   The configuration wizard will walk you through several steps:
+   - Enter config profile name: This application supports multiple remote host profiles. If you enter the name of
+     an existing profile, you can modify its settings; otherwise, a new profile will be created with the name specified.
+   - Host domain name or IP address: The remote host IP address or domain name
+   - Repository base directory: The base directory for all bare repos on the remote host. Must be an **absolute path.**
+   - Default Git branch: The default branch name to use for new Git repos.
+   - SSH key path: The path to the SSH key to use for this remote host (optional).
    This config is stored at `~/.init-repo/config.toml`.
    You can run the config again at any time.
 
@@ -41,11 +48,11 @@ Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
 ### Create a new repository
 
 ```sh
-init-repo new my-project
+init-repo new my-project --host host-profile-name
 ```
 
 This will:
-- Create `/home/git/repos/my-project.git` (or your configured base directory)
+- Create `/home/git/repos/my-project.git` (or your configured base directory) on host `host-profile-name`
 - Initialize a bare Git repo
 - Set `HEAD` to `refs/heads/master` (or your configured default branch)
 

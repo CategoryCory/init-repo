@@ -52,10 +52,10 @@ impl Config {
 }
 
 pub fn run_config_wizard() -> Result<()> {
-    println!("Configuration setup");
+    println!("Configuration setup -- create or modify a host");
 
     // Prompt for alias
-    print!("Host alias (e.g. 'git-server'): ");
+    print!("Enter config profile name (will create new profile if not found): ");
     io::stdout().flush()?;
     let mut alias = String::new();
     io::stdin().read_line(&mut alias)?;
@@ -68,46 +68,36 @@ pub fn run_config_wizard() -> Result<()> {
 
     let existing = config.hosts.get(&alias);
 
-    // Prompt for host
-    let current_host = existing.map(|h| h.host.clone()).unwrap_or_default();
-    print!("Remote SSH address [{}]: ", current_host);
-    io::stdout().flush()?;
-    let mut host = String::new();
-    io::stdin().read_line(&mut host)?;
-    let host = if host.trim().is_empty() { current_host } else { host.trim().to_string() };
+    let host = prompt_with_default(
+        "Host domain name or IP address",
+        &existing.map(|h| h.host.clone()).unwrap_or_default(),
+    )?;
 
-    // Prompt for base_dir
-    let current_base = existing.map(|h| h.base_dir.clone()).unwrap_or("/home/git/repos".to_string());
-    print!("Base repository directory [{}]: ", current_base);
-    io::stdout().flush()?;
-    let mut base_dir = String::new();
-    io::stdin().read_line(&mut base_dir)?;
-    let base_dir = if base_dir.trim().is_empty() { current_base } else { base_dir.trim().to_string() };
+    let base_dir = prompt_with_default(
+        "Repository base directory",
+        &existing
+            .map(|h| h.base_dir.clone())
+            .unwrap_or("/home/git/repos".to_string()),
+    )?;
 
-    // Prompt for default branch
-    let current_branch = existing.map(|h| h.default_branch.clone()).unwrap_or("master".to_string());
-    print!("Default branch name [{}]: ", current_branch);
-    io::stdout().flush()?;
-    let mut branch = String::new();
-    io::stdin().read_line(&mut branch)?;
-    let branch = if branch.trim().is_empty() { current_branch } else { branch.trim().to_string() };
+    let branch = prompt_with_default(
+        "Default Git branch",
+        &existing
+            .map(|h| h.default_branch.clone())
+            .unwrap_or("master".to_string()),
+    )?;
 
-    // Prompt for optional SSH key
-    let current_key = existing.and_then(|h| h.ssh_key.clone()).unwrap_or_default();
-    print!("SSH key path (optional) [{}]: ", current_key);
-    io::stdout().flush()?;
-    let mut key = String::new();
-    io::stdin().read_line(&mut key)?;
-    let ssh_key = if key.trim().is_empty() {
-        if current_key.is_empty() { None } else { Some(current_key) }
-    } else {
-        Some(key.trim().to_string())
-    };
+    let ssh_key = prompt_with_default(
+        "SSH key path (optional)",
+        &existing
+            .and_then(|h| h.ssh_key.clone())
+            .unwrap_or_default(),   
+    )?;
+    let ssh_key = if ssh_key.is_empty() { None } else { Some(ssh_key) };
 
-    // Save host config
     config.hosts.insert(
         alias.clone(),
-        HostConfig {
+        HostConfig { 
             host,
             base_dir,
             default_branch: branch,
@@ -118,4 +108,19 @@ pub fn run_config_wizard() -> Result<()> {
     config.save()?;
     println!("Host profile '{}' saved.", alias);
     Ok(())
+}
+
+fn prompt_with_default(prompt: &str, default: &str) -> Result<String> {
+    print!("{} [{}]: ", prompt, default);
+    io::stdout().flush()?;
+
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)?;
+    let input = input.trim();
+
+    if input.is_empty() {
+        Ok(default.to_string())
+    } else {
+        Ok(input.to_string())
+    }
 }
