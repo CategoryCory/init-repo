@@ -32,9 +32,9 @@ pub enum Commands {
         /// The name of the repo
         repo_name: String,
 
-        /// Optional host alias or SSH address (e.g. 'git@git-server.local')
+        /// Host profile name
         #[arg(long)]
-        host: Option<String>,
+        profile_name: Option<String>,
 
         /// Optional path to SSH key
         #[arg(long)]
@@ -51,4 +51,13 @@ pub enum Commands {
 
     /// Run configuration setup
     Configure,
+
+    /// List all configured host profiles
+    ListHosts,
+
+    /// Delete a configured host profile
+    DeleteHost {
+        /// The profile name to delete
+        profile_name: String,
+    },
 }

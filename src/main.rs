@@ -14,19 +14,25 @@ async fn main() -> anyhow::Result<()> {
             repo_name,
             base_dir,
             default_branch,
-            host,
+            profile_name,
             ssh_key,
         } => {
             init::initialize_repo(
                 &repo_name,
                 base_dir,
                 default_branch,
-                host,
+                profile_name,
                 ssh_key
             ).await?;
         },
         Commands::Configure => {
             config::run_config_wizard()?;
+        },
+        Commands::ListHosts => {
+            config::list_hosts()?;
+        },
+        Commands::DeleteHost { profile_name } => {
+            config::delete_host(&profile_name)?;
         },
     }
 

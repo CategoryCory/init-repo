@@ -110,6 +110,44 @@ pub fn run_config_wizard() -> Result<()> {
     Ok(())
 }
 
+pub fn list_hosts() -> Result<()> {
+    let config = Config::load().context("Failed to load configuration file")?;
+
+    if config.hosts.is_empty() {
+        println!("No host profiles found. Run `init-repo configure` to add one.");
+        return Ok(())
+    }
+
+    println!("Configured hosts:\n");
+
+    for (alias, host) in &config.hosts {
+        println!("{}", alias);
+        println!("    Host:           {}", host.host);
+        println!("    Base directory: {}", host.base_dir);
+        println!("    Default branch: {}", host.default_branch);
+        println!(
+            "    SSH key path:   {}",
+            host.ssh_key.as_deref().unwrap_or("None")
+        );
+        println!();
+    }
+
+    Ok(())
+}
+
+pub fn delete_host(profile_name: &str) -> Result<()> {
+    let mut config = Config::load().context("Failed to load configuration")?;
+
+    if config.hosts.remove(profile_name).is_some() {
+        config.save()?;
+        println!("Host profile {} has been deleted.", profile_name);
+    } else {
+        println!("Host profile {} not found.", profile_name);
+    }
+
+    Ok(())
+}
+
 fn prompt_with_default(prompt: &str, default: &str) -> Result<String> {
     print!("{} [{}]: ", prompt, default);
     io::stdout().flush()?;
