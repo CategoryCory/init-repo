@@ -38,7 +38,7 @@ pub async fn initialize_repo(
 
     let mut ssh = Command::new("ssh");
 
-    if let Some(ref key_path) = ssh_key {
+    if let Some(key_path) = ssh_key.as_deref() {
         ssh.arg("-i").arg(key_path);
     }
 
