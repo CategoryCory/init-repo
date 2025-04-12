@@ -5,6 +5,9 @@
 A simple CLI tool for initializing bare Git repositories. Ideal for self-hosted 
 Git workflows over SSH.
 
+Please note that currently, **init-repo** only supports Unix/Linux targets. Support
+for Windows will be added in a future release.
+
 ## Features
 
 - Initializes **bare Git repos** with correct `HEAD` configuration
