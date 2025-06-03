@@ -225,18 +225,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "init-repo"
-version = "0.1.1"
-dependencies = [
- "anyhow",
- "clap",
- "dirs",
- "serde",
- "tokio",
- "toml",
-]
-
-[[package]]
 name = "is_terminal_polyfill"
 version = "1.70.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -380,6 +368,18 @@ dependencies = [
  "getrandom",
  "libredox",
  "thiserror",
+]
+
+[[package]]
+name = "repo-man"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "dirs",
+ "serde",
+ "tokio",
+ "toml",
 ]
 
 [[package]]

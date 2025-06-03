@@ -23,7 +23,7 @@ impl Config {
     pub fn path() -> Result<PathBuf> {
         Ok(home_dir()
             .context("Could not find home directory")?
-            .join(".init-repo/config.toml"))
+            .join(".repo-man/config.toml"))
     }
 
     pub fn load() -> Result<Self> {
@@ -32,7 +32,7 @@ impl Config {
             let contents = fs::read_to_string(&path)?;
             Ok(toml::from_str(&contents)?)
         } else {
-            Err(anyhow::anyhow!("Config not found. Please run `init-repo configure`."))
+            Err(anyhow::anyhow!("Config not found. Please run `repo-man configure`."))
         }
     }
 
@@ -61,7 +61,7 @@ pub fn run_config_wizard() -> Result<()> {
     io::stdin().read_line(&mut alias)?;
     let alias = alias.trim().to_string();
 
-    // Load existing config or create a blank one
+    // Load the existing config or create a blank one
     let mut config = Config::load().unwrap_or_else(|_| Config {
         hosts: HashMap::new(),
     });
@@ -114,7 +114,7 @@ pub fn list_hosts() -> Result<()> {
     let config = Config::load().context("Failed to load configuration file")?;
 
     if config.hosts.is_empty() {
-        println!("No host profiles found. Run `init-repo configure` to add one.");
+        println!("No host profiles found. Run `repo-man configure` to add one.");
         return Ok(())
     }
 

@@ -1,11 +1,11 @@
-# init-repo
+# repo-man
 
 ## About the project
 
-A simple CLI tool for initializing bare Git repositories. Ideal for self-hosted 
+A simple CLI tool for managing remote Git repositories. Ideal for self-hosted 
 Git workflows over SSH.
 
-Please note that currently, **init-repo** only supports Unix/Linux targets. Support
+Please note that currently, **repo-man** only supports Unix/Linux targets. Support
 for Windows will be added in a future release.
 
 ## Features
@@ -22,19 +22,19 @@ Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
 
 1. Clone this repo to your development machine
    ```sh
-   git clone https://github.com/CategoryCory/init-repo.git
+   git clone https://github.com/CategoryCory/repo-man.git
    ```
-1. In the directory where you cloned the repo, build the project
+2. In the directory where you cloned the repo, build the project
    ```sh
    cargo build --release
    ```
-1. Install the crate
+3. Install the crate
    ```sh
    cargo install --path .
    ```
-1. Run initial configuration
+4. Run initial configuration
    ```sh
-   init-repo configure
+   repo-man configure
    ```
    The configuration wizard will walk you through several steps:
    - Enter config profile name: This application supports multiple remote host profiles. If you enter the name of
@@ -43,7 +43,7 @@ Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
    - Repository base directory: The base directory for all bare repos on the remote host. Must be an **absolute path.**
    - Default Git branch: The default branch name to use for new Git repos.
    - SSH key path: The path to the SSH key to use for this remote host (optional).
-   This config is stored at `~/.init-repo/config.toml`.
+   This config is stored at `~/.repo-man/config.toml`.
    You can run the config again at any time.
 
 ## Usage
@@ -51,7 +51,7 @@ Before beginning, ensure that you have [Rust](https://rust-lang.org) installed.
 ### Create a new repository
 
 ```sh
-init-repo new my-project --host host-profile-name
+repo-man new my-project --host host-profile-name
 ```
 
 This will:
@@ -62,19 +62,19 @@ This will:
 You can also override options per command:
 
 ```sh
-init-repo new my-project --base-dir /tmp/test --default-branch main
+repo-man new my-project --base-dir /tmp/test --default-branch main
 ```
 
 ### Run configuration
 
 ```sh
-init-repo configure
+repo-man configure
 ```
 
 ### Show help
 
 ```sh
-init-repo -h, --help
+repo-man -h, --help
 ```
 
 ## License
